@@ -19,5 +19,19 @@ jQuery(document).ready(function () {
         }
     })
     jQuery( "#datepicker" ).datepicker();
+    jQuery('button.registered').click(function(){
+      jQuery(this).addClass('hide');
+      jQuery('button.back').removeClass('hide');
+      jQuery('input[name="registered"]').attr('value', '1');
+      jQuery('.attr_hide').fadeOut();
+      return false;
+    })
+    jQuery('button.back').click(function(){
+      jQuery(this).addClass('hide');
+      jQuery('button.registered').removeClass('hide');
+      jQuery('input[name="registered"]').attr('value', '0');
+      jQuery('.attr_hide').fadeIn();
+      return false;
+    })
 })
 

@@ -7,6 +7,18 @@ get_header();
 ?>
 <div id="primary" class="content-area">
     <main id="main" class="site-main" role="main">
+        <?php
+            $results = submit_form_boucherie();
+            $flag = FALSE;
+            if(sizeof($results['error'])){
+                $flag = TRUE;
+                echo '<ul class="error">';
+                    foreach($results['error'] as $text){
+                        echo '<li><p>'.$text.'</p></li>';
+                    }
+                echo '</ul>';
+            } 
+        ?>
         <form action='<?php the_permalink(); ?>' method="post" >
         <div class="checkbox">
             <ul>
@@ -248,24 +260,36 @@ get_header();
                 </li>
             </ul>
         </div>
+            <button class="registered">
+                <span class="question">
+                    <?php
+                        _e('Did you order before?If you did, please click here order without register ');
+                    ?>
+                </span>
+            </button>
+            <button class="back hide">
+                <span>
+                    <?php _e('Back'); ?>
+                </span>
+            </button>
             <div class="information-user">
-                <p>
+                <p class="attr_hide">
                     <label>Nom</label>
                     <input type="text" name="nom" value="" />
                 </p>
-                <p>
+                <p class="attr_hide">
                     <label>Prenom</label>
                     <input type="text" name="prenom" value="" />
                 </p>
-                <p>
+                <p class="attr_hide">
                     <label>Address</label>
                     <input type="text" name="address" value="" />
                 </p>
-                <p>
+                <p class="attr_hide">
                     <label>Code_Postal</label>
                     <input type="text" name="codepostal" value="" />
                 </p>
-                 <p>
+                 <p class="attr_hide">
                     <label>Telephone</label>
                     <input type="text" name="telephone" value="" />
                 </p>
@@ -275,10 +299,11 @@ get_header();
                 </p>
                 <p>
                     <label>Datetime picker</label>
-                    <input type="text" id = "datepicker" value="" />
+                    <input type="text" name="date_order" id = "datepicker" value="" />
                 </p>
             </div>
             <?php wp_nonce_field( 'boucherie_my_action', 'boucherie_nonce_field' ); ?>
+            <input type="hidden" value="" name = "registered" />
             <input type="submit" value="submit" name = "submit_boucherie" />
         </form>
     </main><!-- .site-main -->

@@ -6026,3 +6026,6 @@ li.disable:before {
     float: none;
     width: 100%;
 }
+.hide{
+    display:none;
+}

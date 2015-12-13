@@ -83,8 +83,8 @@ if (!function_exists('twentyfifteen_setup')) :
 
         // This theme uses wp_nav_menu() in two locations.
         register_nav_menus(array(
-          'primary' => __('Primary Menu', 'twentyfifteen'),
-          'social' => __('Social Links Menu', 'twentyfifteen'),
+            'primary' => __('Primary Menu', 'twentyfifteen'),
+            'social' => __('Social Links Menu', 'twentyfifteen'),
         ));
 
         /*
@@ -92,7 +92,7 @@ if (!function_exists('twentyfifteen_setup')) :
          * to output valid HTML5.
          */
         add_theme_support('html5', array(
-          'search-form', 'comment-form', 'comment-list', 'gallery', 'caption'
+            'search-form', 'comment-form', 'comment-list', 'gallery', 'caption'
         ));
 
         /*
@@ -101,7 +101,7 @@ if (!function_exists('twentyfifteen_setup')) :
          * See: https://codex.wordpress.org/Post_Formats
          */
         add_theme_support('post-formats', array(
-          'aside', 'image', 'video', 'quote', 'link', 'gallery', 'status', 'audio', 'chat'
+            'aside', 'image', 'video', 'quote', 'link', 'gallery', 'status', 'audio', 'chat'
         ));
 
         $color_scheme = twentyfifteen_get_color_scheme();
@@ -109,8 +109,8 @@ if (!function_exists('twentyfifteen_setup')) :
 
         // Setup the WordPress core custom background feature.
         add_theme_support('custom-background', apply_filters('twentyfifteen_custom_background_args', array(
-          'default-color' => $default_color,
-          'default-attachment' => 'fixed',
+            'default-color' => $default_color,
+            'default-attachment' => 'fixed',
         )));
 
         /*
@@ -132,13 +132,13 @@ add_action('after_setup_theme', 'twentyfifteen_setup');
  */
 function twentyfifteen_widgets_init() {
     register_sidebar(array(
-      'name' => __('Widget Area', 'twentyfifteen'),
-      'id' => 'sidebar-1',
-      'description' => __('Add widgets here to appear in your sidebar.', 'twentyfifteen'),
-      'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-      'after_widget' => '</aside>',
-      'before_title' => '<h2 class="widget-title">',
-      'after_title' => '</h2>',
+        'name' => __('Widget Area', 'twentyfifteen'),
+        'id' => 'sidebar-1',
+        'description' => __('Add widgets here to appear in your sidebar.', 'twentyfifteen'),
+        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+        'after_widget' => '</aside>',
+        'before_title' => '<h2 class="widget-title">',
+        'after_title' => '</h2>',
     ));
 }
 
@@ -190,22 +190,19 @@ if (!function_exists('twentyfifteen_fonts_url')) :
 
         if ('cyrillic' == $subset) {
             $subsets .= ',cyrillic,cyrillic-ext';
-        }
-        elseif ('greek' == $subset) {
+        } elseif ('greek' == $subset) {
             $subsets .= ',greek,greek-ext';
-        }
-        elseif ('devanagari' == $subset) {
+        } elseif ('devanagari' == $subset) {
             $subsets .= ',devanagari';
-        }
-        elseif ('vietnamese' == $subset) {
+        } elseif ('vietnamese' == $subset) {
             $subsets .= ',vietnamese';
         }
 
         if ($fonts) {
             $fonts_url = add_query_arg(array(
-              'family' => urlencode(implode('|', $fonts)),
-              'subset' => urlencode($subsets),
-                ), 'https://fonts.googleapis.com/css');
+                'family' => urlencode(implode('|', $fonts)),
+                'subset' => urlencode($subsets),
+                    ), 'https://fonts.googleapis.com/css');
         }
 
         return $fonts_url;
@@ -261,8 +258,8 @@ function twentyfifteen_scripts() {
 
     wp_enqueue_script('twentyfifteen-script', get_template_directory_uri() . '/js/functions.js', array('jquery'), '20150330', true);
     wp_localize_script('twentyfifteen-script', 'screenReaderText', array(
-      'expand' => '<span class="screen-reader-text">' . __('expand child menu', 'twentyfifteen') . '</span>',
-      'collapse' => '<span class="screen-reader-text">' . __('collapse child menu', 'twentyfifteen') . '</span>',
+        'expand' => '<span class="screen-reader-text">' . __('expand child menu', 'twentyfifteen') . '</span>',
+        'collapse' => '<span class="screen-reader-text">' . __('collapse child menu', 'twentyfifteen') . '</span>',
     ));
 }
 
@@ -376,38 +373,38 @@ add_action('init', 'create_post_type_boucherie');
  */
 function create_post_type_boucherie() {
     $labels = array(
-      'name' => _x('Boucheries', 'post type general name', 'your-plugin-textdomain'),
-      'singular_name' => _x('Boucherie', 'post type singular name', 'your-plugin-textdomain'),
-      'menu_name' => _x('Boucheries', 'admin menu', 'your-plugin-textdomain'),
-      'name_admin_bar' => _x('Boucherie', 'add new on admin bar', 'your-plugin-textdomain'),
-      'add_new' => _x('Add New', 'book', 'your-plugin-textdomain'),
-      'add_new_item' => __('Add New Boucherie', 'your-plugin-textdomain'),
-      'new_item' => __('New Boucherie', 'your-plugin-textdomain'),
-      'edit_item' => __('Edit Boucherie', 'your-plugin-textdomain'),
-      'view_item' => __('View Boucherie', 'your-plugin-textdomain'),
-      'all_items' => __('All Boucheries', 'your-plugin-textdomain'),
-      'search_items' => __('Search Boucheries', 'your-plugin-textdomain'),
-      'parent_item_colon' => __('Parent Boucheries:', 'your-plugin-textdomain'),
-      'not_found' => __('No books found.', 'your-plugin-textdomain'),
-      'not_found_in_trash' => __('No books found in Trash.', 'your-plugin-textdomain')
+        'name' => _x('Boucheries', 'post type general name', 'your-plugin-textdomain'),
+        'singular_name' => _x('Boucherie', 'post type singular name', 'your-plugin-textdomain'),
+        'menu_name' => _x('Boucheries', 'admin menu', 'your-plugin-textdomain'),
+        'name_admin_bar' => _x('Boucherie', 'add new on admin bar', 'your-plugin-textdomain'),
+        'add_new' => _x('Add New', 'book', 'your-plugin-textdomain'),
+        'add_new_item' => __('Add New Boucherie', 'your-plugin-textdomain'),
+        'new_item' => __('New Boucherie', 'your-plugin-textdomain'),
+        'edit_item' => __('Edit Boucherie', 'your-plugin-textdomain'),
+        'view_item' => __('View Boucherie', 'your-plugin-textdomain'),
+        'all_items' => __('All Boucheries', 'your-plugin-textdomain'),
+        'search_items' => __('Search Boucheries', 'your-plugin-textdomain'),
+        'parent_item_colon' => __('Parent Boucheries:', 'your-plugin-textdomain'),
+        'not_found' => __('No books found.', 'your-plugin-textdomain'),
+        'not_found_in_trash' => __('No books found in Trash.', 'your-plugin-textdomain')
     );
 
     $args = array(
-      'labels' => $labels,
-      'description' => __('Description.', 'your-plugin-textdomain'),
-      'public' => true,
-      'publicly_queryable' => false,
-      'show_in_nav_menus' => false,
-      'show_ui' => true,
-      'show_in_menu' => true,
-      'query_var' => false,
-      'rewrite' => array('slug' => 'boucherie'),
-      'capability_type' => 'post',
-      'has_archive' => true,
-      'taxonomies' => array('topics'),
-      'hierarchical' => false,
-      'menu_position' => null,
-      'supports' => array('title', 'thumbnail')
+        'labels' => $labels,
+        'description' => __('Description.', 'your-plugin-textdomain'),
+        'public' => true,
+        'publicly_queryable' => false,
+        'show_in_nav_menus' => false,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'query_var' => false,
+        'rewrite' => array('slug' => 'boucherie'),
+        'capability_type' => 'post',
+        'has_archive' => true,
+        'taxonomies' => array('topics'),
+        'hierarchical' => false,
+        'menu_position' => null,
+        'supports' => array('title', 'thumbnail')
     );
 
     register_post_type('boucherie', $args);
@@ -422,33 +419,33 @@ function create_topics_nonhierarchical_taxonomy() {
 // Labels part for the GUI
 
     $labels = array(
-      'name' => _x('Category', 'taxonomy general name'),
-      'singular_name' => _x('Topic', 'taxonomy singular name'),
-      'search_items' => __('Search Categorys'),
-      'popular_items' => __('Popular Categorys'),
-      'all_items' => __('All Categorya'),
-      'parent_item' => null,
-      'parent_item_colon' => null,
-      'edit_item' => __('Edit Category'),
-      'update_item' => __('Update Category'),
-      'add_new_item' => __('Add New Category'),
-      'new_item_name' => __('New Topic Name'),
-      'separate_items_with_commas' => __('Separate topics with commas'),
-      'add_or_remove_items' => __('Add or remove topics'),
-      'choose_from_most_used' => __('Choose from the most used topics'),
-      'menu_name' => __('Category'),
+        'name' => _x('Category', 'taxonomy general name'),
+        'singular_name' => _x('Topic', 'taxonomy singular name'),
+        'search_items' => __('Search Categorys'),
+        'popular_items' => __('Popular Categorys'),
+        'all_items' => __('All Categorya'),
+        'parent_item' => null,
+        'parent_item_colon' => null,
+        'edit_item' => __('Edit Category'),
+        'update_item' => __('Update Category'),
+        'add_new_item' => __('Add New Category'),
+        'new_item_name' => __('New Topic Name'),
+        'separate_items_with_commas' => __('Separate topics with commas'),
+        'add_or_remove_items' => __('Add or remove topics'),
+        'choose_from_most_used' => __('Choose from the most used topics'),
+        'menu_name' => __('Category'),
     );
 
 // Now register the non-hierarchical taxonomy like tag
 
     register_taxonomy('topics', 'boucherie', array(
-      'hierarchical' => true,
-      'labels' => $labels,
-      'show_ui' => true,
-      'show_admin_column' => true,
-      'update_count_callback' => '_update_post_term_count',
-      'query_var' => false,
-      'rewrite' => array('slug' => 'topic'),
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+        'show_admin_column' => true,
+        'update_count_callback' => '_update_post_term_count',
+        'query_var' => false,
+        'rewrite' => array('slug' => 'topic'),
     ));
 }
 
@@ -461,82 +458,182 @@ add_action('init', 'create_post_type_orders');
  */
 function create_post_type_orders() {
     $labels = array(
-      'name' => _x('Orders', 'post type general name', 'your-plugin-textdomain'),
-      'singular_name' => _x('Order', 'post type singular name', 'your-plugin-textdomain'),
-      'menu_name' => _x('Order', 'admin menu', 'your-plugin-textdomain'),
-      'name_admin_bar' => _x('Order', 'add new on admin bar', 'your-plugin-textdomain'),
-      'edit_item' => __('Edit Order', 'your-plugin-textdomain'),
-      'view_item' => __('View Order', 'your-plugin-textdomain'),
-      'all_items' => __('All Order', 'your-plugin-textdomain'),
-      'search_items' => __('Search Order', 'your-plugin-textdomain'),
-      'parent_item_colon' => __('Parent Order:', 'your-plugin-textdomain'),
-      'not_found' => __('No Order found.', 'your-plugin-textdomain'),
-      'not_found_in_trash' => __('No Order found in Trash.', 'your-plugin-textdomain')
+        'name' => _x('Orders', 'post type general name', 'your-plugin-textdomain'),
+        'singular_name' => _x('Order', 'post type singular name', 'your-plugin-textdomain'),
+        'menu_name' => _x('Order', 'admin menu', 'your-plugin-textdomain'),
+        'name_admin_bar' => _x('Order', 'add new on admin bar', 'your-plugin-textdomain'),
+        'edit_item' => __('Edit Order', 'your-plugin-textdomain'),
+        'view_item' => __('View Order', 'your-plugin-textdomain'),
+        'all_items' => __('All Order', 'your-plugin-textdomain'),
+        'search_items' => __('Search Order', 'your-plugin-textdomain'),
+        'parent_item_colon' => __('Parent Order:', 'your-plugin-textdomain'),
+        'not_found' => __('No Order found.', 'your-plugin-textdomain'),
+        'not_found_in_trash' => __('No Order found in Trash.', 'your-plugin-textdomain')
     );
 
     $args = array(
-      'labels' => $labels,
-      'description' => __('Description.', 'your-plugin-textdomain'),
-      'public' => true,
-      'publicly_queryable' => false,
-      'show_in_nav_menus' => false,
-      'show_ui' => true,
-      'show_in_menu' => true,
-      'query_var' => false,
-      'capability_type' => 'post',
-      'has_archive' => true,
-      'hierarchical' => false,
-      'menu_position' => null,
-      'supports' => array('title'),
-      'capabilities' => array(
-        'create_posts' => false,
-        'edit_post' => false,
-      )
+        'labels' => $labels,
+        'description' => __('Description.', 'your-plugin-textdomain'),
+        'public' => true,
+        'publicly_queryable' => false,
+        'show_in_nav_menus' => false,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'query_var' => false,
+        'capability_type' => 'post',
+        'has_archive' => true,
+        'hierarchical' => false,
+        'menu_position' => null,
+        'supports' => array('title'),
+        'capabilities' => array(
+            'create_posts' => false,
+            'edit_post' => false,
+        )
     );
 
     register_post_type('order', $args);
 }
 
-add_action('init', 'submit_form_boucherie');
+//add_action('init', 'submit_form_boucherie');
 
 function submit_form_boucherie() {
+    $flag = TRUE;
     global $WP_Error;
     if (!isset($_POST['boucherie_nonce_field']) || !wp_verify_nonce($_POST['boucherie_nonce_field'], 'boucherie_my_action')) {
         return;
     }
-
-    $userdata = array(
-      'user_login' => $prenom . $nom,
-      'user_email' => $email  // When creating an user, `user_pass` is expected.
-    );
-
-    $user_id = wp_insert_user($userdata);
-    //On success
-    if (is_wp_error($user_id)) {
-        echo "User created fail";
+    $email_admin = get_option('admin_email');
+    $result = array();
+    $products = $_POST['type'];
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
+    $address = $_POST['address'];
+    $telephone = $_POST['telephone'];
+    $codepostal = $_POST['codepostal'];
+    $email = $_POST['email'];
+    $registered = $_POST['registered'];
+    $date_ordered = $_POST['date_order'];
+    if (!$products) {
+        $result['error'][] = __('The product must checked');
+        $flag = false;
+    } else {
+        $result['products'] = $products;
     }
-    else {
-        //create user success then add usermeta
-        add_user_meta($user_id, 'address', $address, TRUE);
-        add_user_meta($user_id, 'codepostal', $codepostal, TRUE);
-        add_user_meta($user_id, 'telephone', $telephone, TRUE);
-        add_user_meta($user_id, 'date_order', $date_ordered, TRUE);
-        $title_order = 'order-' . date('dmy');
+    if (!$email || !is_email($email)) {
+        $result['error'][] = __('The email is not valid');
+        $flag = false;
+    } else {
+        $result['email'][] = $email;
+    }
+    if (!$date_ordered) {
+        $result['error'][] = __('The day order is not empty');
+        $flag = false;
+    } else {
+        $result['date_ordered'][] = $date_ordered;
+    }
+    $user = get_user_by('email', $email);
+    //if user have registered before
+    if ($registered) {
+        //if user have registered before
+        if (!$user) {
+            $result['error'][] = __('This email is not register before,Please try again');
+            return $result;
+        }
+        $user_id = $user->ID;
+        $nom = get_user_meta($user_id, 'last_name', true);
+        $prenom = get_user_meta($user_id, 'first_name', true);
+        
+    } else { //if user not register
+        if($user){
+            $result['error'][] = __('The email have registered already,Please click button <b> You have ordered before </b>');
+            return $result;
+        }
+        if (!$nom) {
+            $result['error'][] = __('The name is not empty');
+            $flag = false;
+        } else {
+            $result['nom'][] = $nom;
+        }
+        if (!$prenom) {
+            $result['error'][] = __('The first name is not empty');
+            $flag = false;
+        } else {
+            $result['prenom'][] = $prenom;
+        }
+        if (!$address) {
+            $result['error'][] = __('The address is not empty');
+            $flag = false;
+        } else {
+            $result['address'][] = $address;
+        }
+        if (!$codepostal || !is_numeric($codepostal)) {
+            $result['error'][] = __('The code postal is not valid');
+            $flag = false;
+        } else {
+            $result['codepostal'][] = $codepostal;
+        }
+        if (!$telephone || !is_numeric($telephone)) {
+            $result['error'][] = __('The telephone is not empty');
+            $flag = false;
+        } else {
+            $result['telephone'][] = $telephone;
+        }
+        if ($flag) {
+            $userdata = array(
+                'user_login' => $prenom . $nom,
+                'user_email' => $email  // When creating an user, `user_pass` is expected.
+            );
+            $user_id = wp_insert_user($userdata);
+            //On success
+            if (is_wp_error($user_id)) {
+                $result['error'][] = __("User created fail,Please try again or contact to administator");
+            } else {
+                //create user success then add usermeta
+                add_user_meta($user_id, 'address', $address, TRUE);
+                add_user_meta($user_id, 'codepostal', $codepostal, TRUE);
+                add_user_meta($user_id, 'telephone', $telephone, TRUE);
+                add_user_meta($user_id, 'date_order', $date_ordered, TRUE);
+            }
+        }
+    }
+    if($user_id && $flag){
+       $title_order = 'order-' . date('dmy');
         $order = array(
-          'post_title' => $title_order,
-          'post_status' => 'pending',
-          'post_type' => 'order',
-          'post_author' => '',
+            'post_title' => $title_order,
+            'post_status' => 'pending',
+            'post_type' => 'order',
+            'post_author' => '',
         );
         $id_order = wp_insert_post($order, $wp_error);
-        if ($wp_error) {
-            die('error create order');
-        }
-        add_post_meta($id_order, 'product', serialize($_POST['type']));
-        add_post_meta($id_order, 'id_user_order', $user_id);
+        if (!$wp_error) {
+            add_post_meta($id_order, 'product', serialize($products));
+            add_post_meta($id_order, 'id_user_order', $user_id);
+            //sent mail to User
+            $subject = __('Your Id order is ' . $title_order);
+            ob_start();
+            include get_template_directory() . '/templates/email_user.php';
+            $message = ob_get_contents();
+            ob_end_clean();
+            $headers[] = 'From: system <no-reply@gmail.com>';
+            wp_mail($email, $subject, $message, $headers);
+            //sent mail to admin
+            $subject = __('New order is ' . $title_order);
+            $headers1[] = 'From: ' . $prenom . ' ' . $nom . ' <' . $email . '>';
+            ob_start();
+            include get_template_directory() . '/templates/email_admin.php';
+            $message1 = ob_get_contents();
+            ob_end_clean();
+            wp_mail($email_admin, $subject, $message1, $headers1);
+            $result['success'] = 1;
+        }    
     }
-//    echo "<pre>\n";
-//    var_dump($type = serialize($_POST['type']));
-//    var_dump(unserialize($type));
-//    die("debug: " . __METHOD__);
+    return $result;
+}
+
+//add_action('init', 'get_user_email');
+function get_user_email(){
+    $user = get_user_by('email', 'admin@yahoo.com');
+    echo "<pre>\n";
+    var_dump($user);
+    die("debug: " . __METHOD__);
 }
