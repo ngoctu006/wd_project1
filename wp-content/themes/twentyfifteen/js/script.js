@@ -5,7 +5,6 @@
  */
 jQuery(document).ready(function () {
     jQuery('.checkbox input[type="checkbox"]').change(function () {
-        console.log('debug');
         var parentUl = jQuery(this).parent().parent();
         var maxNumCheck = parentUl.attr('data-max-choice');
         if (maxNumCheck < 0) {
@@ -18,6 +17,15 @@ jQuery(document).ready(function () {
             parentUl.find('input[type="checkbox"]:not(:checked)').parent().removeClass('disable');
         }
     })
+    var parentUl = jQuery('.checkbox').find('ul.check_num_max');
+    var maxNumCheck = parentUl.attr('data-max-choice');
+    var countChecked = parentUl.find('input[type="checkbox"]:checked').length;
+    if (countChecked >= maxNumCheck) {
+        parentUl.find('input[type="checkbox"]:not(:checked)').parent().addClass('disable');
+    } else {
+        parentUl.find('input[type="checkbox"]:not(:checked)').parent().removeClass('disable');
+    }
+    
     jQuery( "#datepicker" ).datepicker();
     jQuery('button.registered').click(function(){
       jQuery(this).addClass('hide');

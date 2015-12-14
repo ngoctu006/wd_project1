@@ -13,7 +13,7 @@ get_header();
             if(sizeof($results['error'])){
                 $flag = TRUE;
                 echo '<ul class="error">';
-                    foreach($results['error'] as $text){
+                    foreach(array_reverse($results['error']) as $text){
                         echo '<li><p>'.$text.'</p></li>';
                     }
                 echo '</ul>';
@@ -27,7 +27,7 @@ get_header();
                     $cat1 = get_term_by('slug', 'colis-promo', 'topics');
                     ?>
                     <h2><?php echo $cat1->name; ?></h2>
-                    <ul data-max-choice = '-1'>
+                    <ul class="check_num_max" data-max-choice = '-1'>
                         <?php
                         $args = array(
                           'tax_query' => array(
@@ -44,10 +44,9 @@ get_header();
                         $query = new WP_Query($args);
                         if ($query->have_posts()) {
                             while ($query->have_posts()) : $query->the_post();
-                                ?>
-                                <li><input type="checkbox" name="type['boucherie'][<?php echo $cat1->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /> <?php echo get_the_title() ?></li>
-
-                                <?php
+                        ?>
+                            <li><input <?php if($flag && sizeof($results['boucherie']) && in_array(get_the_ID(), $results['boucherie'][$cat1->term_id])){ echo 'checked'; } ?> type="checkbox" name="boucherie[<?php echo $cat1->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /> <?php echo get_the_title() ?></li>
+                        <?php
                             endwhile;
                         }
                         //RESET YOUR QUERY VARS
@@ -60,7 +59,7 @@ get_header();
                     $cat2 = get_term_by('slug', 'petit-colis', 'topics');
                     ?>
                     <h2><?php echo $cat2->name; ?></h2>
-                    <ul data-max-choice = '4'>
+                    <ul class="check_num_max" data-max-choice = '4'>
                         <?php
                         $args = array(
                           'tax_query' => array(
@@ -78,7 +77,7 @@ get_header();
                         if ($query->have_posts()) {
                             while ($query->have_posts()) : $query->the_post();
                                 ?>
-                                <li><input type="checkbox" name="type['boucherie'][<?php echo $cat2->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /><?php echo get_the_title() ?> </li>
+                        <li><input <?php if($flag && is_array($results['boucherie'][$cat2->term_id]) && in_array(get_the_ID(), $results['boucherie'][$cat2->term_id])){ echo 'checked'; } ?> type="checkbox" name="boucherie[<?php echo $cat2->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /><?php echo get_the_title() ?> </li>
 
                                 <?php
                             endwhile;
@@ -95,7 +94,7 @@ get_header();
                                 $cat3 = get_term_by('slug', 'grand-colis-6-articles-au-choix-dont-1-dans-colis-plus', 'topics');
                             ?>
                             <h2><?php echo $cat3->name; ?></h2>
-                            <ul data-max-choice = '3'>
+                            <ul class="check_num_max" data-max-choice = '3'>
                                 <?php
                                 $args = array(
                                   'tax_query' => array(
@@ -113,7 +112,7 @@ get_header();
                                 if ($query->have_posts()) {
                                     while ($query->have_posts()) : $query->the_post();
                                         ?>
-                                        <li><input type="checkbox" name="type['boucherie'][<?php echo $cat3->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /><?php echo get_the_title() ?> </li>
+                                        <li><input <?php if($flag && is_array($results['boucherie'][$cat3->term_id]) && in_array(get_the_ID(), $results['boucherie'][$cat3->term_id])){ echo 'checked'; } ?> type="checkbox" name="boucherie[<?php echo $cat3->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /><?php echo get_the_title() ?> </li>
                                         <?php
                                     endwhile;
                                 }
@@ -127,7 +126,7 @@ get_header();
                                 $cat4 = get_term_by('slug', 'colis-plus', 'topics');
                             ?>
                             <h2><?php echo $cat4->name; ?></h2>
-                            <ul data-max-choice = '1'>
+                            <ul class="check_num_max" data-max-choice = '1'>
                                 <?php
                                 $args = array(
                                   'tax_query' => array(
@@ -145,7 +144,7 @@ get_header();
                                 if ($query->have_posts()) {
                                     while ($query->have_posts()) : $query->the_post();
                                         ?>
-                                        <li><input type="checkbox" name="type['boucherie'][<?php echo $cat4->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /><?php echo get_the_title() ?> </li>
+                                        <li><input <?php if($flag && is_array($results['boucherie'][$cat4->term_id]) && in_array(get_the_ID(), $results['boucherie'][$cat4->term_id])){ echo 'checked'; } ?> type="checkbox" name="boucherie[<?php echo $cat4->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /><?php echo get_the_title() ?> </li>
                                         <?php
                                     endwhile;
                                 }
@@ -164,7 +163,7 @@ get_header();
                                 $cat5 = get_term_by('slug', 'super-colis-8-articles-au-choix-dont-2-dans-colis-plus', 'topics');
                             ?>
                             <h2><?php echo $cat5->name; ?></h2>
-                            <ul data-max-choice = '8'>
+                            <ul class="check_num_max" data-max-choice = '8'>
                                 <?php
                                 $args = array(
                                   'tax_query' => array(
@@ -182,7 +181,7 @@ get_header();
                                 if ($query->have_posts()) {
                                     while ($query->have_posts()) : $query->the_post();
                                         ?>
-                                        <li><input type="checkbox" name="type['boucherie'][<?php echo $cat5->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /><?php echo get_the_title() ?> </li>
+                                        <li><input <?php if($flag && is_array($results['boucherie'][$cat5->term_id]) && in_array(get_the_ID(), $results['boucherie'][$cat5->term_id])){ echo 'checked'; } ?> type="checkbox" name="boucherie[<?php echo $cat5->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /><?php echo get_the_title() ?> </li>
                                         <?php
                                     endwhile;
                                 }
@@ -196,7 +195,7 @@ get_header();
                                 $cat6 = get_term_by('slug', 'colis-plus-super-colis-8-articles-au-choix-dont-2-dans-colis-plus', 'topics');
                             ?>
                             <h2><?php echo $cat6->name; ?></h2>
-                            <ul data-max-choice = '2'>
+                            <ul class="check_num_max" data-max-choice = '2'>
                                 <?php
                                 $args = array(
                                   'tax_query' => array(
@@ -214,7 +213,7 @@ get_header();
                                 if ($query->have_posts()) {
                                     while ($query->have_posts()) : $query->the_post();
                                         ?>
-                                        <li><input type="checkbox" name="type['boucherie'][<?php echo $cat6->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /><?php echo get_the_title() ?> </li>
+                                        <li><input <?php if($flag && is_array($results['boucherie'][$cat6->term_id]) && in_array(get_the_ID(), $results['boucherie'][$cat6->term_id])){ echo 'checked'; } ?> type="checkbox" name="boucherie[<?php echo $cat6->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /><?php echo get_the_title() ?> </li>
                                         <?php
                                     endwhile;
                                 }
@@ -229,8 +228,8 @@ get_header();
                     <?php
                     $cat7 = get_term_by('slug', 'plateau-par-nombre-de-plateau-1-15-2-25-ou-3', 'topics');
                     ?>
-                    <h2><?php echo $cat1->name; ?></h2>
-                    <ul data-max-choice = '1'>
+                    <h2><?php echo $cat7->name; ?></h2>
+                    <ul class="check_num_max" data-max-choice = '1'>
                         <?php
                         $args = array(
                           'tax_query' => array(
@@ -248,8 +247,7 @@ get_header();
                         if ($query->have_posts()) {
                             while ($query->have_posts()) : $query->the_post();
                                 ?>
-                                <li><input type="checkbox" name="type['boucherie'][<?php echo $cat7->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /> <?php echo get_the_title() ?></li>
-
+                                <li><input <?php if($flag && is_array($results['boucherie'][$cat7->term_id]) && in_array(get_the_ID(), $results['boucherie'][$cat7->term_id])){ echo 'checked'; } ?> type="checkbox" name="boucherie[<?php echo $cat7->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /> <?php echo get_the_title() ?></li>
                                 <?php
                             endwhile;
                         }
@@ -274,32 +272,32 @@ get_header();
             </button>
             <div class="information-user">
                 <p class="attr_hide">
-                    <label>Nom</label>
-                    <input type="text" name="nom" value="" />
+                    <label><?php _e('Nom'); ?></label>
+                    <input type="text" name="nom" value="<?php if($flag && $results['nom']){ echo $results['nom'][0];  } ?>" />
                 </p>
                 <p class="attr_hide">
-                    <label>Prenom</label>
-                    <input type="text" name="prenom" value="" />
+                    <label><?php _e('Prenom'); ?></label>
+                    <input type="text" name="prenom" value="<?php if($flag && $results['prenom']){ echo $results['prenom'][0];  } ?>" />
                 </p>
                 <p class="attr_hide">
-                    <label>Address</label>
-                    <input type="text" name="address" value="" />
+                    <label><?php _e('Address'); ?></label>
+                    <input type="text" name="address" value="<?php if($flag && $results['address']){ echo $results['address'][0];  } ?>" />
                 </p>
                 <p class="attr_hide">
-                    <label>Code_Postal</label>
-                    <input type="text" name="codepostal" value="" />
+                    <label><?php _e('Code_Postal'); ?></label>
+                    <input type="text" name="codepostal" value="<?php if($flag && $results['codepostal']){ echo $results['codepostal'][0];  } ?>" />
                 </p>
                  <p class="attr_hide">
-                    <label>Telephone</label>
-                    <input type="text" name="telephone" value="" />
+                    <label><?php _e('Telephone'); ?></label>
+                    <input type="text" name="telephone" value="<?php if($flag && $results['telephone']){ echo $results['telephone'][0];  } ?>" />
                 </p>
                 <p>
-                    <label>Votre Email</label>
-                    <input type="text" name="email" value="" />
+                    <label><?php _e('Votre Email'); ?></label>
+                    <input type="text" name="email" value="<?php if($flag && $results['email']){ echo $results['email'][0]; } ?>" />
                 </p>
                 <p>
-                    <label>Datetime picker</label>
-                    <input type="text" name="date_order" id = "datepicker" value="" />
+                    <label><?php _e('Datetime picker'); ?></label>
+                    <input type="text" name="date_order" id = "datepicker" value="<?php if($flag && $results['date_ordered']){ echo $results['date_ordered'][0]; } ?>" />
                 </p>
             </div>
             <?php wp_nonce_field( 'boucherie_my_action', 'boucherie_nonce_field' ); ?>

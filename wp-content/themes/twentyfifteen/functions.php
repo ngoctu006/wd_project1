@@ -504,7 +504,7 @@ function submit_form_boucherie() {
     }
     $email_admin = get_option('admin_email');
     $result = array();
-    $products = $_POST['type'];
+    $products = $_POST['boucherie'];
     $nom = $_POST['nom'];
     $prenom = $_POST['prenom'];
     $address = $_POST['address'];
@@ -513,17 +513,18 @@ function submit_form_boucherie() {
     $email = $_POST['email'];
     $registered = $_POST['registered'];
     $date_ordered = $_POST['date_order'];
+    
     if (!$products) {
         $result['error'][] = __('The product must checked');
         $flag = false;
     } else {
-        $result['products'] = $products;
+        $result['boucherie'] = $products;
     }
     if (!$email || !is_email($email)) {
         $result['error'][] = __('The email is not valid');
         $flag = false;
     } else {
-        $result['email'][] = $email;
+        $result['email'] = $email;
     }
     if (!$date_ordered) {
         $result['error'][] = __('The day order is not empty');
@@ -534,6 +535,9 @@ function submit_form_boucherie() {
     $user = get_user_by('email', $email);
     //if user have registered before
     if ($registered) {
+        if(!$flag){
+            return $result;
+        }
         //if user have registered before
         if (!$user) {
             $result['error'][] = __('This email is not register before,Please try again');
@@ -544,39 +548,39 @@ function submit_form_boucherie() {
         $prenom = get_user_meta($user_id, 'first_name', true);
         
     } else { //if user not register
-        if($user){
-            $result['error'][] = __('The email have registered already,Please click button <b> You have ordered before </b>');
-            return $result;
-        }
         if (!$nom) {
             $result['error'][] = __('The name is not empty');
             $flag = false;
         } else {
-            $result['nom'][] = $nom;
+            $result['nom'] = $nom;
         }
         if (!$prenom) {
             $result['error'][] = __('The first name is not empty');
             $flag = false;
         } else {
-            $result['prenom'][] = $prenom;
+            $result['prenom'] = $prenom;
         }
         if (!$address) {
             $result['error'][] = __('The address is not empty');
             $flag = false;
         } else {
-            $result['address'][] = $address;
+            $result['address'] = $address;
         }
         if (!$codepostal || !is_numeric($codepostal)) {
             $result['error'][] = __('The code postal is not valid');
             $flag = false;
         } else {
-            $result['codepostal'][] = $codepostal;
+            $result['codepostal'] = $codepostal;
         }
         if (!$telephone || !is_numeric($telephone)) {
             $result['error'][] = __('The telephone is not empty');
             $flag = false;
         } else {
-            $result['telephone'][] = $telephone;
+            $result['telephone'] = $telephone;
+        }
+        if($user){
+            $result['error'][] = __('The email have registered already,Please click button <b> You have ordered before </b>');
+            return $result;
         }
         if ($flag) {
             $userdata = array(
@@ -625,7 +629,7 @@ function submit_form_boucherie() {
             ob_end_clean();
             wp_mail($email_admin, $subject, $message1, $headers1);
             $result['success'] = 1;
-        }    
+        }
     }
     return $result;
 }
