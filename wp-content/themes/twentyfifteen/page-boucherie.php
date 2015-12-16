@@ -293,7 +293,7 @@ get_header();
                 </p>
                 <p>
                     <label><?php _e('Votre Email'); ?></label>
-                    <input type="text" name="email" value="<?php if($flag && $results['email']){ echo $results['email'][0]; } ?>" />
+                    <input type="text" name="email" value="<?php if($flag && $results['email']){ echo $results['email']; } ?>" />
                 </p>
                 <p>
                     <label><?php _e('Datetime picker'); ?></label>
