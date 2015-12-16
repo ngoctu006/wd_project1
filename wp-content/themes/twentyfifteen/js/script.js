@@ -17,15 +17,16 @@ jQuery(document).ready(function () {
             parentUl.find('input[type="checkbox"]:not(:checked)').parent().removeClass('disable');
         }
     })
-    var parentUl = jQuery('.checkbox').find('ul.check_num_max');
-    var maxNumCheck = parentUl.attr('data-max-choice');
-    var countChecked = parentUl.find('input[type="checkbox"]:checked').length;
-    if (countChecked >= maxNumCheck) {
-        parentUl.find('input[type="checkbox"]:not(:checked)').parent().addClass('disable');
-    } else {
-        parentUl.find('input[type="checkbox"]:not(:checked)').parent().removeClass('disable');
-    }
-    
+
+    jQuery('.checkbox ul.check_num_max').each(function(){
+        var maxNumCheck = jQuery(this).attr('data-max-choice');
+        var countChecked = jQuery(this).find('input[type="checkbox"]:checked').length;
+        if (countChecked >= maxNumCheck && maxNumCheck != -1) {
+            jQuery(this).find('input[type="checkbox"]:not(:checked)').parent().addClass('disable');
+        } else {
+            jQuery(this).find('input[type="checkbox"]:not(:checked)').parent().removeClass('disable');
+        }
+    })
     jQuery( "#datepicker" ).datepicker();
     jQuery('button.registered').click(function(){
       jQuery(this).addClass('hide');
