@@ -617,6 +617,8 @@ function submit_form_boucherie() {
             }
             else {
                 //create user success then add usermeta
+                add_user_meta($user_id, 'first_name', $prenom, TRUE);
+                add_user_meta($user_id, 'last_name', $nom, TRUE);
                 add_user_meta($user_id, 'address', $address, TRUE);
                 add_user_meta($user_id, 'codepostal', $codepostal, TRUE);
                 add_user_meta($user_id, 'telephone', $telephone, TRUE);
@@ -637,15 +639,6 @@ function submit_form_boucherie() {
             add_post_meta($id_order, 'product', serialize($products));
             add_post_meta($id_order, 'id_user_order', $user_id);
             add_post_meta($id_order, 'date_order', $date_ordered, TRUE);
-            //sent mail to User
-            if(get_option('subject_user')){
-                $subject = get_option('subject_user');
-            }else{
-                $subject = __('Your Id order is ' . $title_order);
-            }
-            $message_user = get_option('mail_body_admin');
-            $headers[] = 'From: system <no-reply@gmail.com>';
-            wp_mail($email, $subject, $message_user, $headers);
 
             //sent mail to admin
             if(get_option('subject_admin')){
@@ -655,9 +648,17 @@ function submit_form_boucherie() {
             }
             $headers1[] = 'From: ' . $prenom . ' ' . $nom . ' <' . $email . '>';
             $message_admin = get_option('mail_body_admin');
-            wp_mail($email_admin, $subject, $message_admin, $headers1);
+            $message_admin = str_replace('[nom]', $nom, $message_admin);
+            $message_admin = str_replace('[prenom]', $prenom, $message_admin);
+            $message_admin = str_replace('[address]', $address, $message_admin);
+            $message_admin = str_replace('[code_postal]', $codepostal, $message_admin);
+            $message_admin = str_replace('[telephone]', $telephone, $message_admin);
+            $message_admin = str_replace('[email]', $email, $message_admin);
+            $message_admin = str_replace('[date_order]', $date_ordered, $message_admin);
+            $products = format_html_list_product($products);
+            $message_admin = str_replace('[products]', $products, $message_admin);
+            //wp_mail($email_admin, $subject, $message_admin, $headers1);
             $result['success'] = 1;
-
             remove_filter( 'wp_mail_content_type', 'set_html_content_type' );
         }
     }
@@ -669,7 +670,7 @@ function submit_form_boucherie() {
  */
 function infoOrder_add_meta_box() {
     add_meta_box(
-        'infoOrder_sectionid', __('Information', 'myplugin_textdomain'), 'detail_order_user', 'order', 'advanced'
+        'infoOrder_sectionid', __('Information', ''), 'detail_order_user', 'order', 'advanced'
     );
 }
 
@@ -688,9 +689,9 @@ function detail_order_user($post) {
                 <tr><td>' . __('Fullname') . ' : </td><td>' . $user->display_name . '</td></tr>
                 <tr><td>' . __('Address') . ' : </td><td>' . $address . '</td></tr>
                 <tr><td>' . __('Code postal') . ' : </td><td>' . $codepostal . '</td></tr>
-                <tr><td>' . __('Telephone') . ' : </td><td></td></tr>
+                <tr><td>' . __('Telephone') . ' : </td><td>'.$telephone.'</td></tr>
                 <tr><td>' . __('Email') . ' : </td><td>' . $user->user_email . '</td></tr>
-                <tr><td>' . __('Order date') . ' : </td>' . $date_order . '<td></td></tr>
+                <tr><td>' . __('Order date') . ' : </td><td>' . $date_order . '</td></tr>
             </table>';
     $html .= "<h2>" . __('Detail order') . "</h2>";
     $html .= '<div class="checkbox-Bo"><ul>';
@@ -718,32 +719,43 @@ add_action( 'transition_post_status', 'send_mail_user_after_order_publish', 10, 
 
 function send_mail_user_after_order_publish( $new_status, $old_status, $post )
 {
-    if ( 'publish' !== $new_status or 'publish' === $old_status
-        or 'order' !== get_post_type( $post ) )
+    if ('publish' !== $new_status or 'publish' === $old_status
+            or 'order' !== get_post_type($post))
         return;
-    add_filter( 'wp_mail_content_type', 'set_html_content_type' );
-//    echo "<pre>\n";
-//    var_dump($post);
-//    die("debug: " . __METHOD__);
-//    $subscribers = get_users( array ( 'role' => 'subscriber' ) );
-//    $emails      = array ();
-//
-//    foreach ( $subscribers as $subscriber )
-//        $emails[] = $subscriber->user_email;
-//
-//    $body = sprintf( 'Hey there is a new entry!
-//        See <%s>',
-//        get_permalink( $post )
-//    );
-//
-//
-//    wp_mail( $emails, 'New entry!', $body );
-    remove_filter( 'wp_mail_content_type', 'set_html_content_type' );
+    echo "<pre>\n";
+    var_dump($post);
+    die("debug: " . __METHOD__);
+    $products = unserialize(get_post_meta($post->ID, 'product', TRUE));
+    $id_user = get_post_meta($post->ID, 'id_user_order', TRUE);
+    $date_order = get_post_meta($post->ID, 'date_order', TRUE);
+    $address = get_user_meta($id_user, 'address', TRUE);
+    $codepostal = get_user_meta($id_user, 'codepostal', TRUE);
+    $telephone = get_user_meta($id_user, 'telephone', TRUE);
+    $user = get_user_by("ID", $id_user);
+    
+    add_filter('wp_mail_content_type', 'set_html_content_type');
+    //sent mail to user
+    if (get_option('subject_user')) {
+        $subject = get_option('subject_admin');
+    } else {
+        $subject = __('New order is');
+    }
+    $message_user = get_option('mail_body_user');
+    $message_user = str_replace('[nom]', $nom, $message_user);
+    $message_user = str_replace('[prenom]', $prenom, $message_user);
+    $message_user = str_replace('[address]', $address, $message_user);
+    $message_user = str_replace('[code_postal]', $codepostal, $message_user);
+    $message_user = str_replace('[telephone]', $telephone, $message_user);
+    $message_user = str_replace('[email]', $user->user_email, $message_user);
+    $message_user = str_replace('[date_order]', $date_order, $message_user);
+    $products = format_html_list_product($products);
+    $message_user = str_replace('[products]', $products, $message_user);
+    wp_mail($email_admin, $subject, $message_admin, $headers1);
+    remove_filter('wp_mail_content_type', 'set_html_content_type');
 }
 function set_html_content_type() {
 	return 'text/html';
 }
-
 /*
  * add menu template mail
  */
@@ -753,14 +765,12 @@ function register_my_template_mail_menu_page() {
 	add_menu_page('Template mail', 'Template mail', 'manage_options', 'templatemail', 'templateMailConfig', '', 6);
 }
 function templateMailConfig(){
-
     if($_POST['submit_mail']){
         if(! isset( $_POST['nonce_mail'] )
             || ! wp_verify_nonce( $_POST['nonce_mail'], 'config_mail' )
         ){
            print 'Sorry, your nonce did not verify.';
            exit;
-
         } else {
             $option_name = 'subject_user' ;
             bo_add_option($option_name, $_POST['subject_user']);
@@ -800,3 +810,24 @@ function bo_add_option($option_name, $value) {
         add_option($option_name, $value, '', $autoload);
     }
 }
+function format_html_list_product($products){
+    $html .= '<ul>';
+    foreach ($products as $cat_id => $product) {
+            $html .= '<li><h2>' . get_title_category_boucheries_by_ID($cat_id) . '</h2>
+                    <ul>';
+            foreach ($product as $id) {
+                $html .= '<li>' . get_the_title($id) . '</li>';
+            }
+            $html .='</ul></li>';
+    }
+    $html .= '</ul>';
+    return $html;
+}
+//function debug_mail_admin(){
+//    $message_admin = get_option('mail_body_admin');
+//    $message_admin = str_replace('[name]', , $message_admin);
+//    echo "<pre>\n";
+//    var_dump($message_admin);
+//    die("debug: " . __METHOD__);
+//}
+//add_action('init','debug_mail_admin');
