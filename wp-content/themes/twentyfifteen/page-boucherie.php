@@ -49,7 +49,7 @@ get_header();
                         if ($query->have_posts()) {
                             while ($query->have_posts()) : $query->the_post();
                         ?>
-                            <li><input <?php if($flag && sizeof($results['boucherie']) && in_array(get_the_ID(), $results['boucherie'][$cat1->term_id])){ echo 'checked'; } ?> type="checkbox" name="boucherie[<?php echo $cat1->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /> <?php echo get_the_title() ?></li>
+                            <li><input <?php if($flag && sizeof($results['boucherie'][$cat1->term_id]) && in_array(get_the_ID(), $results['boucherie'][$cat1->term_id])){ echo 'checked'; } ?> type="checkbox" name="boucherie[<?php echo $cat1->term_id; ?>][]" value = "<?php echo get_the_ID(); ?>" /> <?php echo get_the_title() ?></li>
                         <?php
                             endwhile;
                         }

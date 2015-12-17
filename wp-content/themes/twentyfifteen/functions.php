@@ -733,9 +733,6 @@ function send_mail_user_after_order_publish( $new_status, $old_status, $post )
     if ('publish' !== $new_status or 'publish' === $old_status
             or 'order' !== get_post_type($post))
         return;
-    echo "<pre>\n";
-    var_dump($post);
-    die("debug: " . __METHOD__);
     $products = unserialize(get_post_meta($post->ID, 'product', TRUE));
     $id_user = get_post_meta($post->ID, 'id_user_order', TRUE);
     $date_order = get_post_meta($post->ID, 'date_order', TRUE);
@@ -789,7 +786,6 @@ function templateMailConfig(){
             bo_add_option($option_name, $_POST['body_user']);
         }
     }
-
     if($_POST['submit_mail_admin']){
         //config mail to admin
         if(! isset( $_POST['nonce_mail_admin'] )
@@ -886,7 +882,6 @@ function max_id_order(){
     return $the_max;
 }
 function debug(){
-
     echo "<pre>\n";
     var_dump(wp_rand(1,100000));
     die("debug: " . __METHOD__);
