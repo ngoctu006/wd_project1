@@ -17,7 +17,11 @@ get_header();
                         echo '<li><p>'.$text.'</p></li>';
                     }
                 echo '</ul>';
-            } 
+            }
+            if(isset($results['success']) && $results['success']){
+                _e('Order successful');
+            }
+
         ?>
         <form action='<?php the_permalink(); ?>' method="post" >
         <div class="checkbox">
@@ -273,23 +277,23 @@ get_header();
             <div class="information-user">
                 <p class="attr_hide">
                     <label><?php _e('Nom'); ?></label>
-                    <input type="text" name="nom" value="<?php if($flag && $results['nom']){ echo $results['nom'][0];  } ?>" />
+                    <input type="text" name="nom" value="<?php if($flag && $results['nom']){ echo $results['nom'];  } ?>" />
                 </p>
                 <p class="attr_hide">
                     <label><?php _e('Prenom'); ?></label>
-                    <input type="text" name="prenom" value="<?php if($flag && $results['prenom']){ echo $results['prenom'][0];  } ?>" />
+                    <input type="text" name="prenom" value="<?php if($flag && $results['prenom']){ echo $results['prenom'];  } ?>" />
                 </p>
                 <p class="attr_hide">
                     <label><?php _e('Address'); ?></label>
-                    <input type="text" name="address" value="<?php if($flag && $results['address']){ echo $results['address'][0];  } ?>" />
+                    <input type="text" name="address" value="<?php if($flag && $results['address']){ echo $results['address'];  } ?>" />
                 </p>
                 <p class="attr_hide">
                     <label><?php _e('Code_Postal'); ?></label>
-                    <input type="text" name="codepostal" value="<?php if($flag && $results['codepostal']){ echo $results['codepostal'][0];  } ?>" />
+                    <input type="text" name="codepostal" value="<?php if($flag && $results['codepostal']){ echo $results['codepostal'];  } ?>" />
                 </p>
                  <p class="attr_hide">
                     <label><?php _e('Telephone'); ?></label>
-                    <input type="text" name="telephone" value="<?php if($flag && $results['telephone']){ echo $results['telephone'][0];  } ?>" />
+                    <input type="text" name="telephone" value="<?php if($flag && $results['telephone']){ echo $results['telephone'];  } ?>" />
                 </p>
                 <p>
                     <label><?php _e('Votre Email'); ?></label>
@@ -297,11 +301,11 @@ get_header();
                 </p>
                 <p>
                     <label><?php _e('Datetime picker'); ?></label>
-                    <input type="text" name="date_order" id = "datepicker" value="<?php if($flag && $results['date_ordered']){ echo $results['date_ordered'][0]; } ?>" />
+                    <input type="text" name="date_order" id = "datepicker" value="<?php if($flag && isset($results['date_ordered'])){ echo $results['date_ordered']; } ?>" />
                 </p>
             </div>
             <?php wp_nonce_field( 'boucherie_my_action', 'boucherie_nonce_field' ); ?>
-            <input type="hidden" value="" name = "registered" />
+            <input type="hidden" value="<?php if($flag && $results['registered']){ echo $results['registered']; } ?>" name = "registered" />
             <input type="submit" value="submit" name = "submit_boucherie" />
         </form>
     </main><!-- .site-main -->

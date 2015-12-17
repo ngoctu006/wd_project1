@@ -27,7 +27,7 @@ jQuery(document).ready(function () {
             jQuery(this).find('input[type="checkbox"]:not(:checked)').parent().removeClass('disable');
         }
     })
-    jQuery( "#datepicker" ).datepicker();
+    jQuery( "#datepicker" ).datepicker({ minDate: 0 });
     jQuery('button.registered').click(function(){
       jQuery(this).addClass('hide');
       jQuery('button.back').removeClass('hide');
@@ -35,6 +35,12 @@ jQuery(document).ready(function () {
       jQuery('.attr_hide').fadeOut();
       return false;
     })
+    var registered = jQuery('input[name="registered"]').val();
+    if(registered){
+        jQuery('button.registered').addClass('hide');
+        jQuery('button.back').removeClass('hide');
+        jQuery('.attr_hide').hide();
+    }
     jQuery('button.back').click(function(){
       jQuery(this).addClass('hide');
       jQuery('button.registered').removeClass('hide');

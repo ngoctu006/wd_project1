@@ -528,7 +528,9 @@ function submit_form_boucherie() {
     $email = $_POST['email'];
     $registered = $_POST['registered'];
     $date_ordered = $_POST['date_order'];
-
+    if($registered){
+        $result['registered'] = $registered;
+    }
     if (!$products) {
         $result['error'][] = __('The product must checked');
         $flag = false;
@@ -548,7 +550,7 @@ function submit_form_boucherie() {
         $flag = false;
     }
     else {
-        $result['date_ordered'][] = $date_ordered;
+        $result['date_ordered'] = $date_ordered;
     }
     $user = get_user_by('email', $email);
     //if user have registered before
@@ -591,7 +593,7 @@ function submit_form_boucherie() {
             $result['error'][] = __('The code postal is not valid');
             $flag = false;
         }
-        else {
+        else{
             $result['codepostal'] = $codepostal;
         }
         if (!$telephone || !is_numeric($telephone)) {
@@ -607,18 +609,19 @@ function submit_form_boucherie() {
         }
         if ($flag) {
             $userdata = array(
-              'user_login' => $prenom . $nom,
-              'user_email' => $email  // When creating an user, `user_pass` is expected.
+              'user_login' => $prenom . $nom . wp_rand(1,100000),
+              'user_email' => $email,  // When creating an user, `user_pass` is expected.
+              'first_name' => $prenom,
+              'last_name' =>  $nom
             );
             $user_id = wp_insert_user($userdata);
             //On success
             if (is_wp_error($user_id)) {
+                $flag = FALSE;
                 $result['error'][] = __("User created fail,Please try again or contact to administator");
             }
             else {
                 //create user success then add usermeta
-                add_user_meta($user_id, 'first_name', $prenom, TRUE);
-                add_user_meta($user_id, 'last_name', $nom, TRUE);
                 add_user_meta($user_id, 'address', $address, TRUE);
                 add_user_meta($user_id, 'codepostal', $codepostal, TRUE);
                 add_user_meta($user_id, 'telephone', $telephone, TRUE);
@@ -626,7 +629,13 @@ function submit_form_boucherie() {
         }
     }
     if ($user_id && $flag) {
-        $title_order = 'order-' . date('dmy');
+        $max_id_order = max_id_order();
+        if(!$max_id_order){
+          $max_id_order = 1;
+        }else{
+            $max_id_order = $max_id_order + 1;
+        }
+        $title_order = $max_id_order . '-order-' . date('dmy');
         $order = array(
           'post_title' => $title_order,
           'post_status' => 'pending',
@@ -683,17 +692,19 @@ function detail_order_user($post) {
     $address = get_user_meta($id_user, 'address', TRUE);
     $codepostal = get_user_meta($id_user, 'codepostal', TRUE);
     $telephone = get_user_meta($id_user, 'telephone', TRUE);
+    $first_name = get_user_meta($id_user, 'first_name', TRUE);
+    $last_name = get_user_meta($id_user, 'last_name', TRUE);
     $user = get_user_by("ID", $id_user);
     $html = '';
-    $html .= '<table>
-                <tr><td>' . __('Fullname') . ' : </td><td>' . $user->display_name . '</td></tr>
+    $html .= '<table class="info-user">
+                <tr><td>' . __('Fullname') . ' : </td><td>' . $first_name . ' ' . $last_name . '</td></tr>
                 <tr><td>' . __('Address') . ' : </td><td>' . $address . '</td></tr>
                 <tr><td>' . __('Code postal') . ' : </td><td>' . $codepostal . '</td></tr>
                 <tr><td>' . __('Telephone') . ' : </td><td>'.$telephone.'</td></tr>
                 <tr><td>' . __('Email') . ' : </td><td>' . $user->user_email . '</td></tr>
                 <tr><td>' . __('Order date') . ' : </td><td>' . $date_order . '</td></tr>
             </table>';
-    $html .= "<h2>" . __('Detail order') . "</h2>";
+    $html .= "<h3 class='title_order'>" . __('Detail order') . "</h3>";
     $html .= '<div class="checkbox-Bo"><ul>';
     foreach ($products as $cat_id => $product) {
             $html .= '<li><h2>' . get_title_category_boucheries_by_ID($cat_id) . '</h2>
@@ -732,7 +743,7 @@ function send_mail_user_after_order_publish( $new_status, $old_status, $post )
     $codepostal = get_user_meta($id_user, 'codepostal', TRUE);
     $telephone = get_user_meta($id_user, 'telephone', TRUE);
     $user = get_user_by("ID", $id_user);
-    
+
     add_filter('wp_mail_content_type', 'set_html_content_type');
     //sent mail to user
     if (get_option('subject_user')) {
@@ -799,6 +810,9 @@ function templateMailConfig(){
     ob_end_clean();
     echo $html;
 }
+/*
+ *
+ */
 function bo_add_option($option_name, $value) {
     if (get_option($option_name) !== false) {
         // The option already exists, so we just update it.
@@ -810,6 +824,9 @@ function bo_add_option($option_name, $value) {
         add_option($option_name, $value, '', $autoload);
     }
 }
+/*
+ *
+ */
 function format_html_list_product($products){
     $html .= '<ul>';
     foreach ($products as $cat_id => $product) {
@@ -823,11 +840,55 @@ function format_html_list_product($products){
     $html .= '</ul>';
     return $html;
 }
-//function debug_mail_admin(){
-//    $message_admin = get_option('mail_body_admin');
-//    $message_admin = str_replace('[name]', , $message_admin);
-//    echo "<pre>\n";
-//    var_dump($message_admin);
-//    die("debug: " . __METHOD__);
-//}
-//add_action('init','debug_mail_admin');
+/*
+ * Css In BO
+ */
+add_action('admin_head', 'my_admin_css');
+
+function my_admin_css() {
+  echo '<style>
+    table.info-user {
+        margin-bottom: 18px;
+    }
+    table.info-user tr td:first-child {
+        font-size: 15px;
+        padding: 8px 30px 8px 10px;
+        text-align: right;
+        font-weight: bold;
+    }
+    table.info-user tr td:last-child {
+        font-size: 16px;
+    }
+    .checkbox-Bo li {
+        margin-bottom: 20px;
+    }
+    .checkbox-Bo ul ul {
+        margin-left: 10px;
+    }
+    .checkbox-Bo ul li li {
+        margin: 10px 0;
+    }
+    h3.title_order{
+        font-size: 25px;
+        padding-left: 0;
+    }
+    .checkbox-Bo h2 {
+        font-size: 20px !important;
+        padding-left: 0 !important;
+        font-weight: bold !important;
+    }
+  </style>';
+}
+function max_id_order(){
+    global $wpdb;
+    $query = "SELECT max(ID) FROM $wpdb->posts WHERE post_type='order'";
+    $the_max = $wpdb->get_var($query);
+    return $the_max;
+}
+function debug(){
+
+    echo "<pre>\n";
+    var_dump(wp_rand(1,100000));
+    die("debug: " . __METHOD__);
+}
+//add_action('init','debug');

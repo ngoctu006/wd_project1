@@ -55,3 +55,4 @@
         ?>
     <input type="submit" value="save" name="submit_mail_admin" />
 </form>
+<p><label>Note: </label> <br /><b>[nom],[prenom],[address],[code_postal],[telephone],[email],[date_order],[products]  will be replace</b></p>
